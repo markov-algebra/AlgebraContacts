@@ -1,31 +1,40 @@
 <?php
 
-require_once 'core/init.php'
+require_once 'core/init.php';
+
+
+Helper::getHeader('Algebra Contacts','header');
+
 
 ?>
-<!DOCTYPE html>
-<html lang="hr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Algebra Contacts</title>
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 
-  </head>
-  <body>
+<div class="row">
+		<div class="col-xs-12 col-md-8 col-lg-6 col-md-offset-2 col-lg-offset-3">
+			<div class="jumbotron">
+				<div class="container">
+					<h1>Algebra Auth</h1>
+					<p>Lorem ipsum dolor sit amet!</p>
+					<p>
+						<a class="btn btn-primary btn-lg" href="login.php" role="button">Sign In</a>
+						or
+						<a class="btn btn-primary btn-lg" href="register.php" role="button">Create an account</a> 
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
-    <h1>Hello, world!</h1>
+ <?php
 
 
+Helper::getFooter();
 
-   
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-  </body>
-</html>
 
+?>
+
+    
+    
 
 

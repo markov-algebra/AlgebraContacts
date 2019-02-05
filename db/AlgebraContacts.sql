@@ -41,3 +41,8 @@ CREATE TABLE IF NOT EXISTS contacts(
 
 
 ALTER TABLE users FOREIGN KEY,
+
+ALTER TABLE users ADD FOREIGN KEY (role_id) REFERENCES roles(id);
+ALTER TABLE sessions ADD FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE persons ADD FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE contacts ADD FOREIGN KEY (person_id) REFERENCES persons(id);

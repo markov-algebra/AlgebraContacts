@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS algebra_contacts DEFAULT CHARACTER SET utf8 COLLATE utf_8general_ci;
+CREATE DATABASE IF NOT EXISTS algebra_contacts DEFAULT CHARACTER SET utf8 COLLATE utf_8_general_ci;
 
 USE algebra_contacts;
 

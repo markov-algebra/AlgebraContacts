@@ -12,8 +12,18 @@ Helper::getHeader('Algebra Contacts','header');
 		<div class="col-xs-12 col-md-8 col-lg-6 col-md-offset-2 col-lg-offset-3">
 			<div class="jumbotron">
 				<div class="container">
-					<h1>Algebra Auth</h1>
+					<h1><?php
+					echo Config::get('app')['name']
+					
+					
+					?>
+					</h1>
 					<p>Lorem ipsum dolor sit amet!</p>
+
+					<p>
+
+
+
 					<p>
 						<a class="btn btn-primary btn-lg" href="login.php" role="button">Sign In</a>
 						or
@@ -27,7 +37,9 @@ Helper::getHeader('Algebra Contacts','header');
 
 
  <?php
-
+echo '<pre>';
+print_r (Config::get('session'));
+echo '</pre';
 
 Helper::getFooter();
 

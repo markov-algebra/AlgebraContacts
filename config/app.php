@@ -1,12 +1,9 @@
 <?php
 
-// array koji mijenja sva mijesta gdje je upisan Algebra Contacts sa našim novim proizvoljnim upisom; također uključujemo i isključujemo error reporting na jednom mjestu (0 ili 1)
-
-return[
-
+return [
     'name' => 'Algebra Contacts',
-    'error_reporting' => 1
-];
-
+    'error_reporting' => E_ALL,
+    'display_errors' => true
+]
 
 ?>

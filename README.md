@@ -2,6 +2,6 @@
 
 ### Aplication for saving my contacts
 
-££££ Adittional change
-
-
+```
+git push -u origin master
+```

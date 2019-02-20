@@ -4,38 +4,58 @@ require_once 'core/init.php';
 
 Helper::getHeader('Algebra Contacts', 'main-header');
 
+$user = new User();
+
 $validation = new Validation();
 
 if(Input::exists()){
-    
-    $validate = $validation->check([
-        'name'            => [
-            'required'  => true,
-            'min'       => 2,
-            'max'       => 25
-        ],
-        'username'       => [
-            'required'  => true,
-            'min'       => 2,
-            'max'       => 25,
-            'unique'    => 'users'
-        ],
-        'password'       => [
-            'required'  => true,
-            'min'       => 8,
-            'cap_letters'        => 1,
-            'low_case_letters'   => 1,
-            'numbers'            => 1
-        ],
-        'confirm_password'  => [
-            'required'  => true,
-            'matches'   => 'password'
-        ]
-    ]);
+    if (Token::factory()->check(Input::get('token'))) {
+        $validate = $validation->check([
+            'name'            => [
+                'required'  => true,
+                'min'       => 2,
+                'max'       => 25
+            ],
+            'username'       => [
+                'required'  => true,
+                'min'       => 2,
+                'max'       => 25,
+                'unique'    => 'users'
+            ],
+            'password'       => [
+                'required'  => true,
+                'min'       => 3
+            // 'password_condition' => true
+            ],
+            'confirm_password'  => [
+                'required'  => true,
+                'matches'   => 'password'
+            ]
+        ]);
+    }
 
-   // echo '<pre>';
-//var_dump ($validate);
+    if ($validate->passed()) {
+        
+        $salt = Hash::salt(32);
+        $password = Hash::make(Input::get('password'), $salt);
 
+        try {
+            $user->create([
+                'name'      => Input::get('name'),
+                'username'  => Input::get('username'),
+                'password'  => $password,
+                'salt'      => $salt,
+                'role_id'   => 1
+            ]);
+        } catch (Exception $e) {
+            Session::flash('danger', $e->getMessage());
+            Redirect::to('register');
+            return false;
+        }
+        
+        Session::flash('success', "You have registerd successfuly");
+        Redirect::to('login');
+    }
 }
 
 
@@ -49,27 +69,30 @@ if(Input::exists()){
             </div>
             <div class="panel-body">
                 <form method="POST">
+                    <input type="hidden" name="token" value="<?php echo Token::factory()::generate(); ?>">
                     <div class="form-group <?php echo ($validation->hasError('name')) ? 'has-error' : '' ; ?>">
                         <label for="name" class="control-label">Name*</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" value="<?php echo Input::get('name') ?>">
                         <?php echo ($validation->hasError('name')) ? '<p class="text-danger"> '.$validation->hasError('name').'</p>' : '' ; ?>
                     </div>
-                    <!-- DZ ubaciti hasError za ostala polja-->
-                    <div class="form-group <?php echo ($validation->hasError('username')) ? 'has-error' : '' ; ?>">
-                        <label for="name" class="control-label">Username*</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" value="<?php echo Input::get('username') ?>">
-                        <?php echo ($validation->hasError('username')) ? '<p class="text-danger"> '.$validation->hasError('username').'</p>' : '' ; ?>
-                    </div>
-                    <div class="form-group <?php echo ($validation->hasError('password')) ? 'has-error' : '' ; ?>">
-                        <label for="password" class="control-label">Password (min 1 lower_case letter, 1 upper_case letter and 1 number) </label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password" value="<?php echo Input::get('password') ?>">
-                        <?php echo ($validation->hasError('password')) ? '<p class="text-danger"> '.$validation->hasError('password').'</p>' : '' ; ?>
-                    </div>
-                    <div class="form-group<?php echo ($validation->hasError('confirm_password')) ? 'has-error' : '' ; ?>">
-                        <label for="confirm_password" class="control-label">Confirm password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter your password again" value="<?php echo Input::get('confirm_password') ?>">
-                        <?php echo ($validation->hasError('confirm_password')) ? '<p class="text-danger"> '.$validation->hasError('confirm_password').'</p>' : '' ; ?>
-                    </div>
+                    <div class="form-group <?php echo($validation->hasError('username')) ? 'has-error' : ''; ?>">
+						<label class="control-label" for="name">Username*</label>
+						<input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" value="<?php echo Input::get('username')  ?>">
+						<?php echo ($validation->hasError('username')) ? '<p class="text-danger">' . $validation->hasError('username') . '</p>' : '';
+						?>
+					</div>
+					<div class="form-group <?php echo($validation->hasError('password')) ? 'has-error' : ''; ?>">
+						<label class="control-label" for="password">Password</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Choose a password">
+						<?php echo ($validation->hasError('password')) ? '<p class="text-danger">' . $validation->hasError('password') . '</p>' : '';
+						?>
+					</div>
+					<div class="form-group <?php echo($validation->hasError('confirm_password')) ? 'has-error' : ''; ?>">
+						<label class="control-label" for="confirm_password">Confirm Password</label>
+						<input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter your password again">
+						<?php echo ($validation->hasError('confirm_password')) ? '<p class="text-danger">' . $validation->hasError('confirm_password') . '</p>' : '';
+						?>
+					</div>
                     <button type="submit" class="btn btn-primary">Create an account</button>
                 </form>
             </div>

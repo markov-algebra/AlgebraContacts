@@ -42,26 +42,15 @@ class Validation{
                             if ($value != Input::get('password')) {
                                 $this->addError($item, "Field $item must match $rule_value.");
                             }
-                            break;    
-
-                        case 'cap_letters':
-                            if ((preg_match("/[A-Z]/",$value))===0) {
-                                $this->addError($item, "Field $item must have minimum $rule_value cap letter.");    
-                            }
                             break;
-
-                        case 'low_case_letters':
-                            if ((preg_match("/[a-z]/",$value))===0) {
-                                $this->addError($item, "Field $item must have minimum $rule_value low_case letter.");    
-                            }
-                            break; 
-
-                        case 'numbers':
-                            if ((preg_match("/[0-9]/",$value))===0) {
-                                $this->addError($item, "Field $item must have minimum $rule_value number.");    
-                            }
-                            break;   
-                            
+                        case 'password_condition':
+                            $isLowercase = preg_match('/[a-z]/',$value);
+                            $isUpercase = preg_match('/[A-Z]/',$value);
+                            $isNumber = preg_match('/[0-9]/',$value);
+                            if (!($isLowercase && $isUpercase && $isNumber)) {
+                                $this->addError($item,"Field $item must have numbers and lowercase and uppercase letters ");
+                                }
+                            break;
                     }
                 }                
             }

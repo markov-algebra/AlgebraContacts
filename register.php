@@ -37,13 +37,13 @@ if(Input::exists()){
     if ($validate->passed()) {
         
         $salt = Hash::salt(32);
-        $password = Hash::make(Input::get('password'), $salt);
+        $hashed_password = password_hash(Input::get('password'), PASSWORD_DEFAULT);
 
         try {
             $user->create([
                 'name'      => Input::get('name'),
                 'username'  => Input::get('username'),
-                'password'  => $password,
+                'password'  => $hashed_password,
                 'salt'      => $salt,
                 'role_id'   => 1
             ]);

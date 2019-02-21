@@ -38,6 +38,7 @@ class DB{
         return self::$instance;
     }
 
+
     private function query($sql, $params = array()){
         $this->error = false;
 
